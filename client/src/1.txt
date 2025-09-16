@@ -1,0 +1,105 @@
+ERROR
+Request has failed. Status Code: 401
+handleError@http://localhost:3000/static/js/bundle.js:333756:58
+./node_modules/webpack-dev-server/client/overlay.js/createOverlay/<@http://localhost:3000/static/js/bundle.js:333779:18
+ERROR
+Request has failed. Status Code: 401
+handleError@http://localhost:3000/static/js/bundle.js:333756:58
+./node_modules/webpack-dev-server/client/overlay.js/createOverlay/<@http://localhost:3000/static/js/bundle.js:333779:18
+ERROR
+Request has failed. Status Code: 401
+handleError@http://localhost:3000/static/js/bundle.js:333756:58
+./node_modules/webpack-dev-server/client/overlay.js/createOverlay/<@http://localhost:3000/static/js/bundle.js:333779:18
+import React, { useEffect, useRef } from 'react';
+import CultureLayer from "./components/CultureLayer";
+import {
+  Viewer,
+  Ion,
+  IonImageryProvider,
+  Cartesian3,
+  Math as CesiumMath,
+  Color
+} from 'cesium';
+import 'cesium/Build/Cesium/Widgets/widgets.css';
+
+// ? Replace with your valid Cesium Ion access token
+Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2OGU0ZTVhMy01ZGM5LTQyY2YtOWQ3Mi00MjgwODEzNGEzOWIiLCJpZCI6MzM3NTE4LCJpYXQiOjE3NTY4MDc3MTh9.H1a84jOgJZx6UzR64XN0I4Ddp6PSbUAOJKXjFi0hAiI';
+
+
+function App() {
+  const cesiumContainer = useRef(null);
+
+  useEffect(() => {
+    let viewer;
+
+    async function initCesium() {
+      try {
+        window.CESIUM_BASE_URL = '/Cesium';
+        viewer = new Viewer(cesiumContainer.current, {
+  		baseLayerPicker: false,
+  		timeline: false,
+  		animation: false,
+  		infoBox: true, // ? Required for popups
+  		selectionIndicator: true // Optional: shows a highlight ring
+	});
+
+
+        viewer.scene.globe.show = true;
+
+        // Remove default base layer
+        const baseLayer = viewer.imageryLayers.get(0);
+        if (baseLayer) viewer.imageryLayers.remove(baseLayer);
+
+        // Load Bing Maps Aerial imagery from Cesium Ion
+        const imageryProvider = await IonImageryProvider.fromAssetId(3);
+        const layer = viewer.imageryLayers.addImageryProvider(imageryProvider);
+
+        await layer.readyPromise;
+
+        viewer.camera.flyTo({
+          destination: Cartesian3.fromDegrees(78.9629, 20.5937, 1500000),
+          orientation: {
+            heading: CesiumMath.toRadians(0),
+            pitch: CesiumMath.toRadians(-45),
+            roll: 0.0,
+          },
+        });
+        const response = await fetch("http://localhost:3001/api/cultures");
+	const data = await response.json();
+
+	data
+  	.filter(c => c.latitude && c.longitude)
+  	.forEach(culture => {
+    	viewer.entities.add({
+    	  name: culture.name,
+     	 position: Cartesian3.fromDegrees(culture.longitude, culture.latitude),
+     	 point: {
+        	pixelSize: 10,
+      	  	color:Color.RED,
+        	outlineColor: Color.WHITE,
+       	 	outlineWidth: 2,
+     	 },
+      	description: `
+        <h3>${culture.name}</h3>
+        <p>${culture.description || ""}</p>
+        ${culture.mediaUrl ? `<img src="${culture.mediaUrl}" width="200" />` : ""}
+      `,
+    });
+  });
+
+      } catch (error) {
+        console.error('Cesium imagery failed to load:', error);
+      }
+    }
+
+    initCesium();
+
+    return () => {
+      if (viewer) viewer.destroy();
+    };
+  }, []);
+
+  return <div ref={cesiumContainer} style={{ width: '100vw', height: '100vh' }} />;
+}
+
+export default App;
