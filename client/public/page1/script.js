@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_ENDPOINT = 'http://localhost:4000/submit'; 
+    const API_ENDPOINT = '/submit'; 
 
     const form = document.getElementById('festivalForm');
     const messageElement = document.getElementById('message');
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // -------------------------
             // Festival Validity Check (GET)
             // -------------------------
-            const verifyUrl = `http://localhost:4000/verify-festival?festival=${encodeURIComponent(festivalName)}&country=${encodeURIComponent(country)}`;
+            const verifyUrl = `/verify-festival?festival=${encodeURIComponent(festivalName)}&country=${encodeURIComponent(country)}`;
             const verifyResponse = await fetch(verifyUrl);
             const verifyResult = await verifyResponse.json();
 

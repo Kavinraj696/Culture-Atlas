@@ -20,7 +20,7 @@ document.getElementById("searchBtn").addEventListener("click", async () => {
   }
 
   try {
-    const res = await fetch(`http://localhost:4000/api/country/${country}`);
+    const res = await fetch(`/api/country/${country}`);
     const data = await res.json();
 
     if (data.error) {
