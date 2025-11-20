@@ -420,4 +420,40 @@ io.on('connection', (socket) => {
 // Start server
 // ----------------------
 
+
+// DEBUG endpoint: show collection counts and sample documents
+app.get('/debug/db-status', async (req, res) => {
+  try {
+    const eventsCount = await Festival1.countDocuments();
+    const submissionsCount = await Submission1.countDocuments();
+    const historyCount = await History.countDocuments();
+
+    // sample one document from each collection (if any)
+    const sampleEvent = await Festival1.findOne().lean();
+    const sampleSubmission = await Submission1.findOne().lean();
+    const sampleHistory = await History.findOne().lean();
+
+    return res.json({
+      success: true,
+      counts: {
+        events: eventsCount,
+        submissions: submissionsCount,
+        history: historyCount
+      },
+      samples: {
+        event: sampleEvent || null,
+        submission: sampleSubmission || null,
+        history: sampleHistory || null
+      }
+    });
+  } catch (err) {
+    console.error('Debug endpoint error:', err);
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+
+
+
+
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
