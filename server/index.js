@@ -16,7 +16,8 @@ const app = express();
 // Middleware
 // ----------------------
 app.use(cors({
-  origin: 'http://localhost:3000',   // Frontend URL
+  origin: ['http://localhost:3000',
+  "https://kavinraj696.github.io"],   // Frontend URL
   methods: ['GET', 'POST'],
   credentials: true
 }));
@@ -25,12 +26,26 @@ app.use(express.json()); // Parse JSON requests
 // ----------------------
 // MongoDB connection
 // ----------------------
-mongoose.connect('mongodb://localhost:27017/cultureAtlas', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log('Connected to MongoDB (cultureAtlas)'))
-.catch(err => console.error('MongoDB connection error:', err));
+// right before mongoose.connect — replace your current connect block with this
+require('dotenv').config();
+
+const mongoUri = process.env.MONGO_URI;
+console.log('DEBUG: MONGO_URI present? ->', !!mongoUri);
+console.log('DEBUG: MONGO_URI startsWith mongodb+srv:// ? ->', typeof mongoUri === 'string' && mongoUri.startsWith('mongodb+srv://'));
+
+if (!mongoUri) {
+  console.error('ERROR: MONGO_URI is not set. Aborting start.');
+  process.exit(1);
+}
+
+mongoose.connect(mongoUri)
+  .then(() => console.log('Connected to MongoDB Atlas ✅'))
+  .catch(err => {
+    console.error('MongoDB connection error:', err);
+    process.exit(1);
+  });
+
+
 
 
 const eventSchema = new mongoose.Schema({
