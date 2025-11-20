@@ -1,5 +1,6 @@
 const axios = require("axios");
 const dotenv = require("dotenv");
+dotenv.config();
 const express = require('express');
 const http = require('http');
 const mongoose = require('mongoose');
@@ -235,7 +236,7 @@ const festivalSchema = new mongoose.Schema({
 
 
 
-dotenv.config();
+
 const PORT = process.env.PORT || 4000;
 const CALENDARIFIC_KEY = process.env.CALENDARIFIC_KEY;
 const PREDICTHQ_KEY = process.env.PREDICTHQ_KEY;
@@ -363,6 +364,33 @@ app.post('/submit', upload.single('festivalImage'), async (req, res) => {
 // ----------------------
 app.use('/api/cultures', cultureRoutes);
 app.use('/api/events', eventRoutes);
+
+
+// ----------------------
+// Serve React client build (static) + debug check
+// ----------------------
+const fs = require('fs');
+const path = require('path');
+
+const clientBuildPath = path.join(__dirname, '..', 'client', 'build');
+console.log('DEBUG: clientBuildPath =', clientBuildPath);
+console.log('DEBUG: client build exists?', fs.existsSync(clientBuildPath));
+
+// Serve static files
+app.use(express.static(clientBuildPath));
+
+// Serve index.html for any non-API route (prevents swallowing API routes)
+app.get(/^\/(?!api).*/, (req, res) => {
+  const indexHtml = path.join(clientBuildPath, 'index.html');
+  if (fs.existsSync(indexHtml)) {
+    res.sendFile(indexHtml);
+  } else {
+    res.status(500).send('Client build not found on server. Check Render build logs.');
+  }
+});
+
+
+
 
 // ----------------------
 // Socket.IO setup
