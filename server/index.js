@@ -16,7 +16,7 @@ const app = express();
 // Middleware
 // ----------------------
 app.use(cors({
-  origin: ['http://localhost:3000',
+  origin: ['http://localhost:3000','http://localhost:5000',
   "https://kavinraj696.github.io"],   // Frontend URL
   methods: ['GET', 'POST'],
   credentials: true
