@@ -17,7 +17,7 @@ const app = express();
 // ----------------------
 app.use(cors({
   origin: 'http://localhost:3000',   // Frontend URL
-  methods: ['GET', 'POST'],
+  methods: ['GET', 'POST','DELETE','OPTIONS'],
   credentials: true
 }));
 app.use(express.json()); // Parse JSON requests
@@ -25,11 +25,12 @@ app.use(express.json()); // Parse JSON requests
 // ----------------------
 // MongoDB connection
 // ----------------------
-mongoose.connect('mongodb://localhost:27017/cultureAtlas', {
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/cultureAtlas';
+mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log('Connected to MongoDB (cultureAtlas)'))
+.then(() => console.log('Connected to MongoDB'))
 .catch(err => console.error('MongoDB connection error:', err));
 
 
