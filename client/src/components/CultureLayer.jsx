@@ -20,12 +20,12 @@ export default function CultureLayer() {
         .map(culture => (
           <Entity
             key={culture._id}
-            name={culture.name}
+            name={culture.festival_name}
             position={Cartesian3.fromDegrees(culture.longitude, culture.latitude)}
             point={{ pixelSize: 10, color: Color.RED }}
             description={`
-              <h3>${culture.name}</h3>
-              <p>${culture.description || ""}</p>
+              <h3>${culture.festival_name}</h3>
+              <p>${culture.note || culture.Note}</p>
               ${culture.mediaUrl ? `<img src="${culture.mediaUrl}" width="200" />` : ""}
             `}
           />

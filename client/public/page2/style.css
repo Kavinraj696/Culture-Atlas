@@ -1,0 +1,363 @@
+/* search.css - Final Corrected Version */
+
+:root {
+    /* Updated Palette for Rich Backgrounds */
+    --primary-accent: #00B894; /* Teal for pop/action */
+    --secondary-accent: #3498db; /* Blue for date/details */
+    --text-light: #f5f6fa; /* White/Light text for contrast */
+    --text-dark: #2c3e50;
+    --glass-bg: rgba(255, 255, 255, 0.1); /* Highly translucent white */
+    --card-bg: rgba(255, 255, 255, 0.7); /* Semi-opaque white for cards */
+    --shadow-deep: 0 10px 30px rgba(0, 0, 0, 0.4); /* Deep shadow for 3D effect */
+    --transition-zoom: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth cubic-bezier transition for zoom */
+}
+
+/* --- BACKGROUND ANIMATION --- */
+
+@keyframes background-cycle {
+
+    /* Step 1: Start (0% and 16.66% = Show Image 1) */
+    
+    0% { background-image: url('im1.jpg'); }
+    20% { background-image: url('im1.jpg'); }
+    
+    /* Step 2: Transition to Image 2 */
+    
+    20% { background-image: url('im2.jpg'); }
+    40% { background-image: url('im2.jpg'); }
+    
+    /* Step 3: Transition to Image 3 */
+    
+    40% { background-image: url('im3.jpg'); }
+    60% { background-image: url('im3.jpg'); }
+    
+
+     /* Step 4: Transition to Image 4 */
+    
+    60% { background-image: url('im4.jpg'); }
+    80% { background-image: url('im4.jpg'); }
+    
+    
+    
+    /* Step 5: Transition to Image 5 */
+    
+    80% { background-image: url('im5.jpg'); }
+    90% { background-image: url('im5.jpg'); }
+    
+    
+    
+    90% { background-image: url('im1.jpg'); }
+    100% { background-image: url('im1.jpg'); }
+    
+    }
+    
+    
+    
+    /* --- APPLY ANIMATION TO THE BODY --- */
+    
+body {
+    
+    /* 1. Animation Setup */
+    animation: background-cycle 40s infinite; /* 10s total duration, loops forever */
+    
+    
+    /* 2. Background properties needed for the effect */
+    
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+    /* 3. Transition Property (For smooth fade-in/out between images) */
+    
+    transition: opacity 4s ease-in-out; /* The fade effect */
+    
+     /* 4. Overlay for readability */
+    background-color: rgba(0, 0, 0, 0.4);
+    
+    background-blend-mode: overlay;
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* --- MODAL OVERLAY STYLES --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.festival-card img {
+    max-height: 250px;
+    width: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+
+/* --- SEARCH PAGE CONTAINER (FIX APPLIED) --- */
+/* This pseudo-element creates the glass background without trapping child elements */
+.search-page-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background: var(--glass-bg);
+    backdrop-filter: blur(3px);
+    border-radius: 20px;
+}
+
+/* The container itself is now transparent */
+.search-page-container {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: var(--shadow-deep); 
+    position: relative;
+    z-index: 1;
+}
+
+/* --- Header & Search Bar --- */
+.search-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.search-header h1 {
+    font-size: 3.5em;
+    color: var(--text-light);
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
+    margin-bottom: 5px;
+    font-weight: 800;
+}
+
+.search-header p {
+    color: var(--text-light);
+    font-size: 1.2em;
+}
+
+.search-form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 60px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.search-form input {
+    flex-grow: 1;
+    padding: 20px 30px;
+    font-size: 1.1em;
+    border: none;
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.95);
+}
+
+.search-form button {
+    padding: 20px 40px;
+    background-color: var(--primary-accent);
+    color: var(--text-dark);
+    font-size: 1.2em;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s;
+}
+
+.search-form button:hover:not(:disabled) {
+    background-color: #00a384;
+    transform: scale(1.02);
+}
+
+.search-form button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.message-area {
+    text-align: center;
+    padding: 10px;
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+/* --- Results Grid & Card Design --- */
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 35px;
+    padding-top: 20px;
+}
+
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 1.2em;
+    padding: 30px;
+    color: var(--text-light);
+}
+
+.festival-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(5px);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    
+    /* FIX: All transition durations are now standardized to prevent animation snapping */
+    transition: transform var(--transition-zoom), 
+                box-shadow var(--transition-zoom),
+                background var(--transition-zoom),
+                top var(--transition-zoom),
+                left var(--transition-zoom), 
+                width var(--transition-zoom),
+                height var(--transition-zoom),
+                padding var(--transition-zoom);
+    
+    border-left: 8px solid var(--secondary-accent);
+    overflow: hidden;
+}
+
+.festival-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+}
+
+/* --- ZOOMLY MODIFIED CARD STYLES --- */
+.festival-card.zoomed {
+    position: fixed;
+    z-index: 1002;
+    margin: 0 !important;
+    height: 70vh;
+    width: 70vw;
+    transform: translate(-50%, -50%) scale(1);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.1);
+    width: 85vw;
+    max-width: 900px;
+    padding: 40px;
+    background: #ffffff;
+    border-color: var(--primary-accent);
+    color: var(--text-dark);
+
+    transition: transform var(--transition-zoom), 
+                top var(--transition-zoom),
+                left var(--transition-zoom),
+                width var(--transition-zoom),
+                height var(--transition-zoom),
+                padding var(--transition-zoom),
+                background 0.4s,
+                border-color 0.4s;
+    
+    overflow: auto;
+}
+
+/* Add this to your search.css file */
+body.body-no-scroll {
+    overflow: hidden;
+}
+
+/* Styles for content inside the zoomed card */
+.festival-card.zoomed .card-header h3,
+.festival-card.zoomed .card-description,
+.festival-card.zoomed .tag {
+    color: var(--text-dark);
+}
+
+.festival-card.zoomed .card-header h3 {
+    font-size: 2em;
+}
+
+.festival-card.zoomed .card-description {
+    font-size: 1.1em;
+}
+
+.festival-card.zoomed .card-date {
+    color: var(--secondary-accent);
+}
+
+.festival-card.zoomed .card-tags {
+    margin-top: 20px;
+}
+
+/* --- General Card Content Styles --- */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.card-header h3 {
+    color: var(--text-dark);
+    font-size: 1.6em;
+    font-weight: 800;
+}
+
+.card-country {
+    background-color: var(--primary-accent);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    font-size: 0.95em;
+}
+
+.card-date {
+    color: var(--secondary-accent);
+    font-weight: 600;
+    font-size: 1em;
+    margin-top: 5px;
+}
+
+.card-description {
+    color: var(--text-dark);
+    font-weight: 400;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+.card-tags {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--text-dark);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.8em;
+}
+.festival-card.zoomed img {
+    max-height: 800px;
+    width: 100%;
+    object-fit: contain;
+    margin-top: 20px;
+    border-radius: 12px;
+    transition: max-height 0.4s ease, transform 0.4s ease;
+}

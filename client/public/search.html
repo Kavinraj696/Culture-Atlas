@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culture Atlas Finder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./page2/style.css">
+    <link rel="preload" as="image" href="./page2/im1.jpg">
+    <link rel="preload" as="image" href="./page2/im2.jpg">
+    <link rel="preload" as="image" href="./page2/im3.jpg">
+    <link rel="preload" as="image" href="./page2/im4.jpg">
+    <link rel="preload" as="image" href="./page2/im5.jpg">
+</head>
+<body>
+      
+    <div class="modal-overlay"></div>
+
+    <div class="search-page-container">
+        <header class="search-header">
+            <h1>🔍 Culture Atlas Finder</h1>
+            <p>Search by <strong>Festival Name</strong> or <strong>Country</strong> to explore the world's heritage.</p>
+        </header>
+
+        <form id="searchForm" class="search-form">
+            <input
+                type="text"
+                id="queryInput"
+                placeholder="Enter festival name or country (e.g., India, Carnival)"
+                required
+            />
+            <button type="submit" id="searchButton">
+                Search
+            </button>
+        </form>
+
+        <p id="message" class="message-area"></p>
+
+        <div id="resultsGrid" class="results-grid">
+            </div>
+    </div>
+
+    <script src="./page2/script.js"></script>
+</body>
+</html>

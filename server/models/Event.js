@@ -1,16 +1,17 @@
 const mongoose = require('mongoose');
 
-const EventSchema = new mongoose.Schema({
-  title: String,
-  location: String,
-  coordinates: {
-    lat: Number,
-    lng: Number
-  },
-  mediaUrl: String,
-  description: String,
-  tags: [String],
-  timestamp: { type: Date, default: Date.now }
+const eventSchema = new mongoose.Schema({
+  festival_name: String,
+  country: String,
+  city: String,
+  latitude: Number,
+  longitude: Number,
+  date: String,
+  month: String,
+  note: String,
+  Note: String,
+  tags:Array
 });
 
-module.exports = mongoose.model('Event', EventSchema);
+// 👇 Mongoose will map "Event" → "events" collection automatically
+module.exports = mongoose.model('Event', eventSchema);

@@ -13,6 +13,32 @@
   }
 }
 
+.container {
+  position: relative;
+  height: 100vh; /* Full viewport height */
+}
+
+.button-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  display: flex;
+  gap: 10px;
+  border-radius: 50%;
+}
+
+.button-container button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

@@ -1,5 +1,6 @@
 // ✅ Replace with your valid Cesium Ion access token
 import React, { useEffect, useRef } from 'react';
+
 import {
   Viewer,
   Ion,
@@ -11,13 +12,23 @@ import {
   defined
 } from 'cesium';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
-
+import './App.css';
 // ✅ Replace with your valid Cesium Ion access token
-Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2OGU0ZTVhMy01ZGM5LTQyY2YtOWQ3Mi00MjgwODEzNGEzOWIiLCJpZCI6MzM3NTE4LCJpYXQiOjE3NTY4MDc3MTh9.H1a84jOgJZx6UzR64XN0I4Ddp6PSbUAOJKXjFi0hAiI';
+Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIxODUyMWI2Mi1iNzgyLTQwMDYtYjgzMy03MjczN2JmYmI0ZTciLCJpZCI6MzUxMzc1LCJpYXQiOjE3NjA2NzUzNTN9.3EncVrJortrDhOqYSWCqVwvdL0gYsdUlYbfqDEundoY';
+<iframe src="about:blank" sandbox="allow-scripts" title="Empty sandbox frame"></iframe>
+
 
 function App() {
   const cesiumContainer = useRef(null);
-
+  const navigatetofestform = ()=>{
+    window.location.href = '/form.html'; 
+  };
+  const navigatetofestsearch = ()=>{
+    window.location.href = '/search.html'; 
+  };
+  const navigatetohistsearch = ()=>{
+    window.location.href = 'search_hist.html'; 
+  };
   useEffect(() => {
     let viewer;
 
@@ -37,50 +48,57 @@ function App() {
 
         viewer.scene.globe.show = true;
 
+        // Remove default imagery
         const baseLayer = viewer.imageryLayers.get(0);
         if (baseLayer) viewer.imageryLayers.remove(baseLayer);
 
+        // Add Cesium base imagery
         const imageryProvider = await IonImageryProvider.fromAssetId(3);
         viewer.imageryLayers.addImageryProvider(imageryProvider);
 
+        // Fly camera to Earth
         viewer.camera.flyTo({
-          destination: Cartesian3.fromDegrees(78.9629, 20.5937, 1500000),
+          destination: Cartesian3.fromDegrees(73.2090, 8.6139, 1200000), // zoomed out for global view
           orientation: {
             heading: CesiumMath.toRadians(0),
-            pitch: CesiumMath.toRadians(-45),
+            pitch: CesiumMath.toRadians(-20),
             roll: 0.0,
           },
         });
 
+        // ✅ Fetch today's festivals from backend
         const response = await fetch("http://localhost:4000/api/cultures");
         if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);
-        const data = await response.json();
-
-        data
-          .filter(c => typeof c.latitude === 'number' && typeof c.longitude === 'number')
-          .forEach(culture => {
+        const festivals = await response.json();
+        
+        // Add festival pins
+        festivals
+          .filter(f => typeof f.latitude === 'number' && typeof f.longitude === 'number')
+          .forEach(festival => {
             viewer.entities.add({
-              name: culture.name,
-              position: Cartesian3.fromDegrees(culture.longitude, culture.latitude),
+              name: festival.name,
+              position: Cartesian3.fromDegrees(festival.longitude, festival.latitude),
               point: {
-                pixelSize: 12,
-                color: Color.RED,
+                pixelSize: 13,
+                color: Color.ORANGE,
                 outlineColor: Color.WHITE,
                 outlineWidth: 2,
               },
               description: `
                 <div style="font-family: sans-serif; line-height:1.4">
-                  <h3>${culture.name}</h3>
-                  <p>${culture.description || ""}</p>
-                  ${culture.mediaUrl ? `<img src="${culture.mediaUrl}" width="240" style="margin-top:8px; border-radius:6px" />` : ""}
+                  <h3>${festival.festival_name}</h3>
+                  <p><strong>Location:</strong> ${festival.country}</p>
+                  <p>${festival.note || festival.Note}</p>
+                  <p><strong>Date:</strong> ${festival.date +" "+ festival.month || "Variable"}</p>
                 </div>
               `
             });
           });
 
+        // Handle marker click
         viewer.screenSpaceEventHandler.setInputAction((movement) => {
           const pickedObject = viewer.scene.pick(movement.position);
-          console.log("Picked object:", pickedObject); // ✅ Debug Tip
+          console.log("Picked object:", pickedObject);
           if (defined(pickedObject) && pickedObject.id) {
             viewer.selectedEntity = pickedObject.id;
           }
@@ -90,7 +108,7 @@ function App() {
         console.error('Cesium setup failed:', error);
       }
     }
-
+    
     const timeout = setTimeout(() => {
       initCesium();
     }, 0);
@@ -101,7 +119,31 @@ function App() {
     };
   }, []);
 
-  return <div ref={cesiumContainer} style={{ width: '100vw', height: '100vh' }} />;
+  return (
+    <div style={{ position: 'relative', width: '100vw', height: '100vh' }}>
+      <div className="button-container">
+      <button onClick={navigatetofestform}>Add Festival</button>
+      <button onClick={navigatetofestsearch}>Search</button>
+      <button onClick={navigatetohistsearch}>History</button>
+        
+      </div>
+      <div
+        ref={cesiumContainer}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 0
+        }}
+      />
+    </div>
+  );
+  
+  
+  
+  
 }
 
 export default App;

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Factbook Book</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Pacifico&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./page3/style.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Cover Image -->
+    <div id="cover-image">
+      <img src="./page3/fp.png" alt="Cover" id="topImage">
+      <!-- Search -->
+      <div id="search-bar">
+        <input type="text" id="countryInput" placeholder="Search Country(e.g.,India)">
+        <button id="searchBtn">🔍</button>
+        <p id="errorMsg" class="hidden"></p>
+      </div>
+    </div>
+
+    <!-- Book -->
+    <div class="book" id="book">
+      <!-- Front Cover -->
+      <div class="cover" id="frontCover">
+        <button id="closeBookBtn" class="hidden">✖</button>
+      </div>
+      
+      <!-- Pages -->
+      <div class="pages">
+        <div class="page left" id="leftPage"></div>
+        <div class="page right" id="rightPage"></div>
+      </div>
+
+      <!-- Navigation Controls -->
+      <div class="navigation-controls">
+        <button class="nav-btn" id="prevBtn" onclick="prevPage()">◀ Previous</button>
+        <div class="page-counter" id="pageCounter">1 / 4</div>
+        <button class="nav-btn" id="nextBtn" onclick="nextPage()">Next ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="./page3/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,172 @@
+:root {
+    --primary-color: #6C5CE7; /* A vibrant purple */
+    --secondary-color: #A29BFE; /* Lighter purple */
+    --accent-color: #00B894; /* Green for success */
+    --text-dark: #2d3436;
+    --text-light: #636e72;
+    --bg-light: #fdfdfd;
+    --bg-gradient-start: #E0C3FC; /* Light purple for background */
+    --bg-gradient-end: #8EC5FC;   /* Light blue for background */
+    --border-color: #dfe6e9;
+    --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+body {
+    font-family: 'Montserrat', sans-serif; /* Modern, clean font */
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(34, 1, 1, 0.4)), url('back.png');
+    background-size: cover; /* This makes the image cover the entire body */
+    background-position: center; /* This centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Use min-height to ensure it fills the screen even if content is short */
+    margin: 0;
+    color: #fff;
+    line-height: 1.6;
+}
+
+.form-container {
+    background-color: rgba(255, 255, 255, 0.65); /* Near opaque white, adjust the 0.95 if needed */
+    padding: 35px 50px; /* Increased padding */
+    border-radius: 12px;
+    box-shadow: var(--shadow-light);
+    width: 100%;
+    max-width: 500px; /* Max width for better readability on larger screens */
+    animation: fadeIn 0.8s ease-out; /* Simple fade-in animation */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.form-container:hover {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+}
+
+h1 {
+    font-family: 'Playfair Display', serif; /* Elegant, classic font for heading */
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-size: 2.8em; /* Larger heading */
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+}
+
+.tagline {
+    text-align: center;
+    color: var(--text-light);
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 1.1em;
+    font-weight: 300;
+}
+
+.form-group {
+    margin-bottom: 20px; /* More space between form groups */
+}
+
+label {
+    display: block;
+    margin-bottom: 8px; /* More space below label */
+    color: var(--text-dark);
+    font-weight: 600; /* Bolder labels */
+    font-size: 0.95em;
+}
+
+input[type="text"],
+input[type="date"],
+textarea {
+    width: 100%;
+    padding: 12px 15px; /* Increased padding in inputs */
+    border: 1px solid var(--border-color);
+    border-radius: 8px; /* More rounded corners */
+    box-sizing: border-box;
+    font-size: 1em;
+    color: var(--text-dark);
+    background-color: #f8f9fa; /* Slightly off-white input background */
+    transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="date"]:focus,
+textarea:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(162, 155, 254, 0.2); /* Focus glow */
+    outline: none;
+    background-color: #fff;
+}
+
+/* File Upload Input */
+input[type="file"] {
+    padding: 0.4rem;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #b46d68, #c53eaf);
+    cursor: pointer;
+    transition: border 0.3s ease, background 0.3s ease;
+}
+
+input[type="file"]:hover {
+    background: #c97676;
+    border-color: #594242;
+}
+
+/* Preview Image */
+#previewImage {
+    margin-top: 10px;
+    max-width: 100%;
+    max-height: 220px;
+    border-radius: 8px;
+    border: 1px solid #ffffff;
+    display: block;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+
+textarea {
+    resize: vertical;
+    min-height: 90px; /* Minimum height for textarea */
+}
+
+button[type="submit"] {
+    width: 100%;
+    padding: 15px; /* Larger button */
+    background: linear-gradient(45deg, var(--primary-color) 0%, var(--secondary-color) 100%); /* Gradient button */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em; /* Larger font for button */
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+button[type="submit"]:hover {
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+    opacity: 0.9;
+}
+
+#message {
+    margin-top: 25px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.05em;
+    padding: 10px;
+    border-radius: 6px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
