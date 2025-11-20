@@ -16,8 +16,7 @@ const app = express();
 // Middleware
 // ----------------------
 app.use(cors({
-  origin: ['http://localhost:3000','http://localhost:5000',
-  "https://kavinraj696.github.io"],   // Frontend URL
+  origin: 'http://localhost:3000',   // Frontend URL
   methods: ['GET', 'POST'],
   credentials: true
 }));
@@ -26,13 +25,11 @@ app.use(express.json()); // Parse JSON requests
 // ----------------------
 // MongoDB connection
 // ----------------------
-require('dotenv').config();
-
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect('mongodb://localhost:27017/cultureAtlas', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })
-.then(() => console.log('Connected to MongoDB Atlas'))
+.then(() => console.log('Connected to MongoDB (cultureAtlas)'))
 .catch(err => console.error('MongoDB connection error:', err));
 
 

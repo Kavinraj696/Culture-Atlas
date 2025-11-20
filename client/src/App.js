@@ -1,6 +1,6 @@
 // ✅ Replace with your valid Cesium Ion access token
 import React, { useEffect, useRef } from 'react';
-import './index.css';
+
 import {
   Viewer,
   Ion,
@@ -11,11 +11,10 @@ import {
   ScreenSpaceEventType,
   defined
 } from 'cesium';
-import { API_BASE } from './config';
 import 'cesium/Build/Cesium/Widgets/widgets.css';
 import './App.css';
 // ✅ Replace with your valid Cesium Ion access token
-Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlMGMxM2VmZC02M2QwLTRlZTItOGZjNC0zMTE0OTAzYmE2ZmEiLCJpZCI6MzYyMDU0LCJpYXQiOjE3NjM2MTc2Mzh9.nfUi3za00okBxtUwT1z-P8dc_eY6op5Q2qGF_Pd7UsA';
+Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2OGU0ZTVhMy01ZGM5LTQyY2YtOWQ3Mi00MjgwODEzNGEzOWIiLCJpZCI6MzM3NTE4LCJpYXQiOjE3NTY4MDc3MTh9.H1a84jOgJZx6UzR64XN0I4Ddp6PSbUAOJKXjFi0hAiI';
 <iframe src="about:blank" sandbox="allow-scripts" title="Empty sandbox frame"></iframe>
 
 
@@ -68,7 +67,7 @@ function App() {
         });
 
         // ✅ Fetch today's festivals from backend
-        const response = await fetch(`${API_BASE}/api/cultures`);
+        const response = await fetch("http://localhost:4000/api/cultures");
         if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);
         const festivals = await response.json();
         
