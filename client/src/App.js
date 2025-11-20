@@ -67,7 +67,7 @@ function App() {
         });
 
         // ✅ Fetch today's festivals from backend
-        const response = await fetch("http://localhost:4000/api/cultures");
+        const response = await fetch(`/api/cultures`);
         if (!response.ok) throw new Error(`Failed to fetch: ${response.status}`);
         const festivals = await response.json();
         
